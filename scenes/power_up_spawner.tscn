@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv8el3ttuw80l"]
+
+[ext_resource type="Script" uid="uid://npiomm6lijbl" path="res://scripts/power_up_spawner.gd" id="1_q81tu"]
+[ext_resource type="PackedScene" uid="uid://dfy5jbvwwy3w8" path="res://scenes/power_up.tscn" id="2_kq3qs"]
+
+[node name="PowerUpSpawner" type="Node"]
+script = ExtResource("1_q81tu")
+powerup_scene = ExtResource("2_kq3qs")
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="DespawnTimer" type="Timer" parent="."]
+wait_time = 6.0
