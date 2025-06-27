@@ -1,6 +1,6 @@
-# Dodge the Creeps - Enhanced 2D Game (Godot Engine)
+# Pulse Evade: Enhanced 2D Game (Godot Engine)
 
-A simple yet fully playable 2D game built using the **Godot Engine**, originally based on the official [Godot "Dodge the Creeps" tutorial](https://docs.godotengine.org/en/stable/getting_started/first_2d_game/index.html). 
+A simple yet fully playable 2D game built using the **Godot Engine**, originally based on the official [Godot "Dodge the Creeps" tutorial](https://docs.godotengine.org/en/stable/getting_started/first_2d_game/index.html).
 
 ---
 
