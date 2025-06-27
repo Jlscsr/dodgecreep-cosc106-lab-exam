@@ -45,7 +45,6 @@ func _ready() -> void:
 	if hud:
 		hud.add_to_group("hud")
 	
-	# Setup difficulty timer - make sure it exists in scene or create it
 	if not difficulty_timer:
 		difficulty_timer = Timer.new()
 		difficulty_timer.name = "DifficultyTimer"
@@ -53,7 +52,6 @@ func _ready() -> void:
 		difficulty_timer.autostart = false
 		add_child(difficulty_timer)
 	
-	# Always connect the signal
 	if not difficulty_timer.timeout.is_connected(_on_difficulty_timer_timeout):
 		difficulty_timer.timeout.connect(_on_difficulty_timer_timeout)
 	
@@ -100,18 +98,9 @@ func start_game_with_difficulty(difficulty: String) -> void:
 	current_spawn_interval = base_spawn_interval
 	current_mob_scale = base_mob_scale
 
-	print("=== DIFFICULTY SETTINGS ===")
-	print("Difficulty: %s" % difficulty)
-	print("Base speed: %.2f, Max speed: %.2f" % [base_mob_speed_multiplier, max_mob_speed_multiplier])
-	print("Base spawn interval: %.2f, Min interval: %.2f" % [base_spawn_interval, min_spawn_interval])
-	print("Base scale: %s, Max scale: %s" % [str(base_mob_scale), str(max_mob_scale)])
-	print("===========================")
-
 	new_game()
 
 func _on_difficulty_timer_timeout():
-	print("=== DIFFICULTY TIMER TRIGGERED (Every 15 seconds) ===")
-	
 	# Store old values for comparison
 	var old_speed = current_mob_speed_multiplier
 	var old_interval = current_spawn_interval
@@ -123,9 +112,6 @@ func _on_difficulty_timer_timeout():
 	var scale_at_cap = current_mob_scale.x >= max_mob_scale.x
 	
 	if speed_at_cap and interval_at_cap and scale_at_cap:
-		print("All difficulty parameters have reached their caps for %s difficulty!" % current_difficulty)
-		print("Speed cap: %.2f, Interval cap: %.2f, Scale cap: %s" % [max_mob_speed_multiplier, min_spawn_interval, str(max_mob_scale)])
-		# Still restart timer to keep checking
 		difficulty_timer.start()
 		return
 	
@@ -145,19 +131,6 @@ func _on_difficulty_timer_timeout():
 	# Update mob timer with new spawn interval
 	mob_timer.wait_time = current_spawn_interval
 	
-	# Show difficulty increase message only if something actually changed
-	var something_changed = (old_speed != current_mob_speed_multiplier or 
-							old_interval != current_spawn_interval or 
-							old_scale != current_mob_scale)
-	
-	# Print detailed comparison
-	print("Speed: %.2f -> %.2f %s" % [old_speed, current_mob_speed_multiplier, "(MAX)" if speed_at_cap else ""])
-	print("Spawn interval: %.2f -> %.2f %s" % [old_interval, current_spawn_interval, "(MIN)" if interval_at_cap else ""])
-	print("Scale: %s -> %s %s" % [str(old_scale), str(current_mob_scale), "(MAX)" if scale_at_cap else ""])
-	print("Mob timer wait time updated to: %.2f" % mob_timer.wait_time)
-	print("=== DIFFICULTY INCREASE COMPLETE ===")
-	
-	# Restart timer for next increase (every 15 seconds)
 	difficulty_timer.start()
 
 func game_over() -> void:
@@ -283,7 +256,6 @@ func _on_powerup_picked_up(type: String) -> void:
 			if camera and camera.has_method("shake"):
 				camera.shake(0.8, 25.0)  # Intense shake
 			
-			# Add screen flash effect
 			create_explosion_flash()
 			
 			kill_all_mobs()
@@ -314,7 +286,6 @@ func activate_slowmo(duration: float):
 	restore_all_mobs()
 
 func create_explosion_flash():
-	# Create a white flash effect for explosion
 	var flash = ColorRect.new()
 	flash.color = Color(1, 1, 1, 0.8)
 	flash.size = get_viewport().get_visible_rect().size

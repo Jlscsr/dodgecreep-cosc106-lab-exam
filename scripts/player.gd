@@ -114,7 +114,6 @@ func shake_camera():
 	if camera and camera.has_method("shake"):
 		camera.shake(0.2, 15)
 	else:
-		# Fallback shake if new camera methods aren't available
 		var original_position = get_viewport().get_camera_2d().position
 		var shake_tween = create_tween()
 		shake_tween.tween_property(get_viewport().get_camera_2d(), "position", original_position + Vector2(10, 0), 0.05)
