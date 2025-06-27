@@ -72,8 +72,14 @@ func take_damage(amount: int):
 	if is_invincible:
 		return
 		
+	$DamageTaken.play()
 	current_health -= amount
 	update_health_bar()
+	
+	# Enhanced damage effect with camera
+	var camera = get_viewport().get_camera_2d()
+	if camera and camera.has_method("damage_effect"):
+		camera.damage_effect(0.5)
 	
 	var hurt_tween = create_tween()
 	hurt_tween.tween_property($AnimatedSprite2D, "modulate", Color(1, 0.3, 0.3), 0.1)
@@ -92,6 +98,7 @@ func start(pos):
 	$CollisionShape2D.disabled = false
 
 func activate_shield():
+	$ActivateShield.play()
 	is_invincible = true
 	await get_tree().create_timer(5.0).timeout
 	is_invincible = false
@@ -101,13 +108,13 @@ func update_health_bar():
 	if hud.size() > 0:
 		hud[0].update_health(current_health, max_health)
 		return
-			
 
 func shake_camera():
 	var camera = get_viewport().get_camera_2d()
 	if camera and camera.has_method("shake"):
 		camera.shake(0.2, 15)
 	else:
+		# Fallback shake if new camera methods aren't available
 		var original_position = get_viewport().get_camera_2d().position
 		var shake_tween = create_tween()
 		shake_tween.tween_property(get_viewport().get_camera_2d(), "position", original_position + Vector2(10, 0), 0.05)

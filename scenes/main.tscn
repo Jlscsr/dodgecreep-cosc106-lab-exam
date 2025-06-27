@@ -1,12 +1,19 @@
-[gd_scene load_steps=11 format=4 uid="uid://c3oajnnla8ab6"]
+[gd_scene load_steps=16 format=4 uid="uid://c3oajnnla8ab6"]
 
 [ext_resource type="Script" uid="uid://bnfpswt6ivuk8" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://gc3mlsk8qm4y" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://7j2j0upnjhj2" path="res://scenes/mob.tscn" id="2_tefeu"]
+[ext_resource type="Texture2D" uid="uid://u142uajwgdhp" path="res://art/evade_pulse_bg.png" id="3_85g3d"]
 [ext_resource type="PackedScene" uid="uid://clixbctdjk3ry" path="res://scenes/hud.tscn" id="4_jyhfs"]
+[ext_resource type="AudioStream" uid="uid://botjxh2xclwud" path="res://sounds/impact.mp3" id="4_tipki"]
 [ext_resource type="AudioStream" uid="uid://c3xvjemebv45q" path="res://sounds/gameover.wav" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dv8el3ttuw80l" path="res://scenes/power_up_spawner.tscn" id="5_tefeu"]
+[ext_resource type="AudioStream" uid="uid://cff50ab5layel" path="res://sounds/explosion_sound.mp3" id="6_choun"]
+[ext_resource type="AudioStream" uid="uid://diy0855inrgr3" path="res://sounds/shield_activate.mp3" id="6_ya4ey"]
 [ext_resource type="Script" uid="uid://domtbtgcrlyuq" path="res://scripts/camera_2d.gd" id="7_o6xl0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_choun"]
+texture = ExtResource("3_85g3d")
 
 [sub_resource type="Curve2D" id="Curve2D_sugp2"]
 _data = {
@@ -27,15 +34,24 @@ loop = true
 script = ExtResource("1_0wfyh")
 mob_scene = ExtResource("2_tefeu")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="Panel" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0972158, 0.142472, 0.182292, 1)
+theme_override_styles/panel = SubResource("StyleBoxTexture_choun")
 
 [node name="Player" parent="." instance=ExtResource("1_o5qli")]
+
+[node name="DamageTaken" type="AudioStreamPlayer2D" parent="Player"]
+stream = ExtResource("4_tipki")
+
+[node name="ActivateShield" type="AudioStreamPlayer2D" parent="Player"]
+stream = ExtResource("6_ya4ey")
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="Player"]
+stream = ExtResource("6_choun")
 
 [node name="MobPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_sugp2")
@@ -69,3 +85,5 @@ stream = ExtResource("5_tbgi4")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(244, 360)
 script = ExtResource("7_o6xl0")
+
+[node name="DifficultyTimer" type="Timer" parent="."]
